@@ -1,0 +1,97 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --sd-ink: #111827;
+  --sd-ink-55: #5B6470;
+  --sd-ink-45: #6B7482;
+  --sd-ink-38: #8891A0;
+  --sd-ink-30: #9AA1AC;
+  --sd-rule: #D6D9DE;
+  --sd-rule-soft: #E8EAEE;
+  --sd-accent: #2563EB;
+  --sd-accent-soft: rgba(37, 99, 235, 0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { background: #FFFFFF; -webkit-font-smoothing: antialiased; }
+
+body {
+  margin: 0;
+  background: #FFFFFF;
+  color: var(--sd-ink);
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, p, ul, ol, li, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: var(--sd-accent); text-decoration: none; }
+a:hover { color: #1D4ED8; }
+
+::selection { background: rgba(37, 99, 235, 0.15); }
+:focus-visible { outline: 2px solid var(--sd-accent); outline-offset: 2px; }
+
+/* ── Eyebrow ─────────────────────────────────────────────── */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sd-ink-55);
+}
+
+.eyebrow .rule {
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--sd-rule);
+}
+
+/* ── SectionHead ─────────────────────────────────────────── */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--sd-rule-soft);
+}
+
+.section-head .index {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--sd-accent);
+}
+
+.section-head .bar {
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--sd-rule);
+}
+
+.section-head .label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sd-ink);
+}
+
+.section-head .meta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--sd-ink-55);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
