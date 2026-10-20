@@ -1,25 +1,28 @@
-import { Eyebrow, SectionHead } from "@/components/ui";
 import { CURRICULUM } from "@/content/curriculum";
 import { SITE, TRAINERS } from "@/content/site";
 
-/* ── LMS §8 light tokens, inline so the page is self-contained ────────── */
+/* ── Palette (mirrors globals.css custom props for inline-style use) ───── */
 const C = {
-  bg: "#FFFFFF",
-  panel: "#F5F6F8",
-  panel2: "#EDEEF1",
-  border: "#E8EAEE",
-  borderStrong: "#D6D9DE",
-  accent: "#2563EB",
-  accentHover: "#1D4ED8",
-  accentSoft: "rgba(37, 99, 235, 0.08)",
-  text: "#111827",
-  textSecondary: "#5B6470",
-  textMuted: "#9AA1AC",
-  success: "#16A34A",
+  ink: "#0E2238",
+  ink70: "#3C4F66",
+  ink50: "#6B788A",
+  ink30: "#A7B0BE",
+  lime: "#C4E538",
+  limeDark: "#A3C321",
+  white: "#FFFFFF",
+  wash: "#F5F6F8",
+  rule: "#E6E8EC",
 };
 
-const SHADOW_CARD = "0 1px 2px rgba(16,24,40,0.04)";
-const SHADOW_LIFT = "0 12px 32px rgba(16,24,40,0.10)";
+const SIGN_IN_HREF = "#"; // static mockup — no auth endpoint
+
+const NAV = [
+  { label: "Home", href: "#top" },
+  { label: "Programme", href: "#overview" },
+  { label: "Curriculum", href: "#structure" },
+  { label: "Outcomes", href: "#highlights" },
+  { label: "Fees", href: "#fees" },
+];
 
 const OUTCOMES = [
   "Design and evaluate agentic AI systems grounded in LLM fundamentals.",
@@ -30,444 +33,519 @@ const OUTCOMES = [
   "Lead AI product decisions with engineering depth and business fluency.",
 ];
 
-const FORMATS = [
-  { label: "Duration", value: "6 months" },
-  { label: "Format", value: SITE.mode },
-  { label: "Cadence", value: SITE.cadence },
-  { label: "Cohort", value: SITE.cohort },
-];
-
-const PILLARS = [
+const FEES = [
   {
-    code: "01",
-    title: "Practice-first learning",
-    body:
-      "Every session ships a deck, a curated prompt set and an AI mentor grounded in that session's material. You learn by doing, not by watching.",
+    tone: "plain" as const,
+    tag: "Early enrolment",
+    price: "Rp 18.500.000",
+    note: "Per participant · before cohort start",
+    perks: ["6-month full access", "All decks and prompt sets", "AI mentor access", "Certificate of completion"],
   },
   {
-    code: "02",
-    title: "Banking context throughout",
-    body:
-      "Case studies, datasets and compliance scenarios are drawn from the bank's actual domain — OCR on real document types, vision on branch CCTV, NLP on internal policy.",
-  },
-  {
-    code: "03",
-    title: "AI-native software delivery",
-    body:
-      "Months 4–6 cover the SDLC changes AI demands: how teams are restructured, how reviews change, how the manifesto maps to new tooling.",
+    tone: "lime" as const,
+    tag: "Standard · recommended",
+    price: "Rp 22.000.000",
+    note: "Per participant · standard rate",
+    perks: ["6-month full access", "All decks and prompt sets", "AI mentor access", "Certificate of completion", "Group coaching sessions"],
   },
 ];
 
-// This is a static marketing landing — sign-in buttons intentionally point at
-// "#". The real app (the full Next.js microsite with auth) lives elsewhere;
-// change these hrefs when that app has a public URL.
-const SIGN_IN_HREF = "#";
+const PAYMENT_OPTS = [
+  { label: "Full payment", desc: "Single invoice before cohort start. Qualifies for early-enrolment rate." },
+  { label: "Monthly installment", desc: "Six equal monthly payments, billed on the first of each programme month." },
+  { label: "Corporate billing", desc: "Direct invoice to HR or Finance. Programme team supplies a PO template on request." },
+];
+
+// Hero image — Unsplash hot-link. Mockup only; swap for a local or branded
+// asset when the real campaign goes live.
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1000&q=80";
 
 export default function LandingPage() {
   const totalSessions = CURRICULUM.reduce((n, m) => n + m.sessions.length, 0);
   const confirmedMonths = CURRICULUM.filter((m) => m.status !== "pending").length;
 
   return (
-    <main style={{ background: C.bg, color: C.text, minHeight: "100vh" }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "32px 32px 96px" }}>
-        {/* ── Top chrome: lockup + sign-in ──────────────────────── */}
-        <header
+    <div
+      id="top"
+      style={{
+        maxWidth: 1360,
+        margin: "0 auto",
+        padding: 32,
+      }}
+    >
+      {/* ─────── Framed white card that holds the whole landing ─────── */}
+      <div
+        style={{
+          background: C.white,
+          borderRadius: 28,
+          overflow: "hidden",
+        }}
+      >
+        {/* ───────── Top nav ───────── */}
+        <nav
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            paddingBottom: 24,
-            borderBottom: `1px solid ${C.border}`,
+            padding: "22px 40px",
+            borderBottom: `1px solid ${C.rule}`,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <a href="#top" style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span
               aria-hidden="true"
               style={{
-                width: 30,
-                height: 30,
-                borderRadius: 9,
-                background: C.accent,
-                display: "flex",
+                width: 32,
+                height: 32,
+                borderRadius: 8,
+                background: C.ink,
+                display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontFamily: "var(--font-mono)",
-                fontSize: 8.5,
-                letterSpacing: "0.06em",
-                color: "#fff",
+                color: C.lime,
+                fontWeight: 800,
+                fontSize: 13,
+                letterSpacing: "0.02em",
               }}
             >
+              A
+            </span>
+            <span style={{ fontSize: 20, fontWeight: 800, color: C.ink, letterSpacing: "-0.02em" }}>
               AINE
             </span>
-            <div style={{ lineHeight: 1.2 }}>
-              <p style={{ fontSize: 13, fontWeight: 600, color: C.text }}>{SITE.short}</p>
-              <p style={{ fontSize: 11.5, color: C.textSecondary }}>
-                {SITE.client} · {SITE.programme}
-              </p>
-            </div>
-          </div>
-          <a
-            href={SIGN_IN_HREF}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 7,
-              padding: "9px 16px",
-              fontSize: 12.5,
-              fontWeight: 500,
-              color: C.text,
-              background: "transparent",
-              border: `1px solid ${C.borderStrong}`,
-              borderRadius: 10,
-            }}
-          >
-            Sign in <span aria-hidden="true">→</span>
           </a>
-        </header>
 
-        {/* ── 0 · Hero ──────────────────────────────────────────── */}
-        <section style={{ paddingTop: 72, paddingBottom: 24 }}>
-          <p
+          <ul
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 10,
-              fontFamily: "var(--font-mono)",
-              fontSize: 10,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: C.textSecondary,
+              gap: 32,
+              fontSize: 14,
+              fontWeight: 500,
+              color: C.ink70,
             }}
           >
-            <span
-              aria-hidden="true"
-              style={{ display: "inline-block", width: 24, height: 1, background: C.borderStrong }}
-            />
-            {SITE.programme} · {SITE.cohort}
-          </p>
+            {NAV.map((n) => (
+              <li key={n.href}>
+                <a href={n.href} style={{ color: "inherit" }}>
+                  {n.label}
+                </a>
+              </li>
+            ))}
+          </ul>
 
-          <h1
-            style={{
-              fontSize: "clamp(36px, 5vw, 64px)",
-              fontWeight: 600,
-              letterSpacing: "-0.02em",
-              lineHeight: 1.06,
-              color: C.text,
-              marginTop: 20,
-              maxWidth: "20ch",
-            }}
-          >
-            Engineers for the <span style={{ color: C.accent }}>AI-native era</span> of banking.
-          </h1>
-
-          <p
-            style={{
-              fontSize: 16,
-              lineHeight: 1.7,
-              color: C.textSecondary,
-              marginTop: 20,
-              maxWidth: "58ch",
-            }}
-          >
-            A six-month intensive for Danamon engineers. Move from understanding how large language
-            models work to shipping autonomous AI agents on real banking workflows — with the
-            governance guardrails the industry requires.
-          </p>
-
-          <div style={{ display: "flex", gap: 10, marginTop: 32, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+            <a href={SIGN_IN_HREF} style={{ fontSize: 14, fontWeight: 500, color: C.ink }}>
+              Sign in
+            </a>
             <a
               href={SIGN_IN_HREF}
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "12px 22px",
-                fontSize: 13.5,
-                fontWeight: 500,
-                color: "#fff",
-                background: C.accent,
-                border: `1px solid ${C.accent}`,
-                borderRadius: 10,
-                boxShadow: SHADOW_LIFT,
+                padding: "11px 22px",
+                borderRadius: 999,
+                border: `1.5px solid ${C.ink}`,
+                fontSize: 14,
+                fontWeight: 600,
+                color: C.ink,
               }}
             >
-              Sign in to the academy <span aria-hidden="true">→</span>
-            </a>
-            <a
-              href="#structure"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "12px 22px",
-                fontSize: 13.5,
-                fontWeight: 500,
-                color: C.text,
-                background: "transparent",
-                border: `1px solid ${C.borderStrong}`,
-                borderRadius: 10,
-              }}
-            >
-              See the syllabus
+              Join cohort
             </a>
           </div>
+        </nav>
 
-          {/* Stats strip */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-              marginTop: 56,
-              background: C.bg,
-              border: `1px solid ${C.border}`,
-              borderRadius: 14,
-              overflow: "hidden",
-              boxShadow: SHADOW_CARD,
-            }}
-          >
-            {[
-              [String(CURRICULUM.length), "Modules"],
-              [String(totalSessions), "Sessions planned"],
-              [`${confirmedMonths}/${CURRICULUM.length}`, "Months with syllabus"],
-              [String(TRAINERS.length), "Industry trainers"],
-            ].map(([value, label], i, arr) => (
-              <div
-                key={label}
+        {/* ───────── Hero ───────── */}
+        <section
+          style={{
+            padding: "72px 56px 88px",
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
+            gap: 56,
+            alignItems: "center",
+          }}
+        >
+          {/* Left — copy */}
+          <div>
+            {/* Social proof row */}
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 32 }}>
+              <div style={{ display: "flex" }}>
+                {TRAINERS.slice(0, 3).map((t, i) => (
+                  <span
+                    key={t.code}
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 999,
+                      background: i === 0 ? "#F2C94C" : i === 1 ? "#2F80ED" : "#56CCF2",
+                      border: `2.5px solid ${C.white}`,
+                      marginLeft: i === 0 ? 0 : -10,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: C.white,
+                      fontWeight: 700,
+                      fontSize: 12,
+                    }}
+                  >
+                    {t.name.split(" ").map((w) => w[0]).join("").slice(0, 2)}
+                  </span>
+                ))}
+              </div>
+              <p style={{ fontSize: 13.5, color: C.ink70 }}>
+                Trusted by <b style={{ color: C.ink }}>{SITE.client}</b> engineering teams
+              </p>
+            </div>
+
+            <h1
+              style={{
+                fontSize: "clamp(42px, 5.2vw, 72px)",
+                fontWeight: 800,
+                letterSpacing: "-0.035em",
+                lineHeight: 1.02,
+                color: C.ink,
+                maxWidth: "14ch",
+              }}
+            >
+              Build the next AI-native engineers of {SITE.client}.
+            </h1>
+
+            <p
+              style={{
+                fontSize: 16.5,
+                lineHeight: 1.65,
+                color: C.ink70,
+                marginTop: 28,
+                maxWidth: "48ch",
+              }}
+            >
+              A six-month intensive moving your team from LLM fundamentals to shipping autonomous
+              AI agents on real banking workflows — with the governance guardrails the industry
+              requires.
+            </p>
+
+            <div style={{ display: "flex", gap: 14, marginTop: 40, flexWrap: "wrap" }}>
+              <a
+                href={SIGN_IN_HREF}
                 style={{
-                  padding: "22px 24px",
-                  borderRight: i < arr.length - 1 ? `1px solid ${C.border}` : undefined,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "16px 30px",
+                  background: C.ink,
+                  color: C.white,
+                  borderRadius: 999,
+                  fontSize: 14.5,
+                  fontWeight: 600,
                 }}
               >
-                <b
-                  style={{
-                    display: "block",
-                    fontSize: 30,
-                    fontWeight: 600,
-                    letterSpacing: "-0.02em",
-                    color: C.text,
-                    fontVariantNumeric: "tabular-nums",
-                  }}
-                >
-                  {value}
-                </b>
-                <span
-                  style={{
-                    display: "block",
-                    marginTop: 6,
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 10,
-                    letterSpacing: "0.14em",
-                    textTransform: "uppercase",
-                    color: C.textMuted,
-                  }}
-                >
-                  {label}
-                </span>
-              </div>
-            ))}
+                Get Started Now
+              </a>
+              <a
+                href="#structure"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "16px 30px",
+                  background: C.white,
+                  color: C.ink,
+                  border: `1.5px solid ${C.ink}`,
+                  borderRadius: 999,
+                  fontSize: 14.5,
+                  fontWeight: 600,
+                }}
+              >
+                View All Modules
+              </a>
+            </div>
+          </div>
+
+          {/* Right — image + floating module pills */}
+          <div style={{ position: "relative", width: "100%", aspectRatio: "4 / 5" }}>
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                borderRadius: 24,
+                overflow: "hidden",
+                backgroundColor: C.wash,
+                backgroundImage: `url("${HERO_IMAGE}")`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+              aria-label="A learner reviewing course material on a laptop"
+            />
+            {/* Pill overlay — scattered module chips, one highlighted */}
+            <div
+              style={{
+                position: "absolute",
+                left: "6%",
+                right: "6%",
+                bottom: "6%",
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 10,
+                justifyContent: "center",
+              }}
+            >
+              {CURRICULUM.map((m, i) => {
+                const highlighted = i === 1; // AINE Fundamentals → Agentic AI feel
+                return (
+                  <span
+                    key={m.id}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: "10px 18px",
+                      borderRadius: 999,
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: highlighted ? C.ink : C.ink,
+                      background: highlighted ? C.lime : C.white,
+                      boxShadow: "0 6px 20px rgba(14, 34, 56, 0.08)",
+                      border: highlighted ? `1px solid ${C.limeDark}` : `1px solid ${C.rule}`,
+                    }}
+                  >
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: 999,
+                        background: highlighted ? C.ink : C.ink50,
+                      }}
+                    />
+                    {m.short}
+                  </span>
+                );
+              })}
+            </div>
           </div>
         </section>
 
-        {/* ── 01 · Programme Overview ───────────────────────────── */}
-        <section style={{ marginTop: 96 }}>
-          <SectionHead index="01" label="Programme overview" />
-
+        {/* ───────── 01 · Programme overview — "brighter future" style ───────── */}
+        <section
+          id="overview"
+          style={{
+            background: C.wash,
+            padding: "88px 56px",
+          }}
+        >
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "minmax(0, 1.4fr) minmax(0, 1fr)",
+              gridTemplateColumns: "minmax(0, 0.95fr) minmax(0, 1fr)",
               gap: 56,
-              alignItems: "start",
-              marginTop: 32,
+              alignItems: "center",
             }}
           >
-            <div>
-              <h2
+            {/* Left — image + two stat tiles */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gridTemplateRows: "auto auto",
+                gap: 16,
+              }}
+            >
+              {/* Image card spanning left column, two rows */}
+              <div
                 style={{
-                  fontSize: "clamp(24px, 2.8vw, 36px)",
-                  fontWeight: 600,
-                  letterSpacing: "-0.02em",
-                  lineHeight: 1.18,
-                  color: C.text,
-                  maxWidth: "28ch",
+                  gridRow: "1 / 3",
+                  borderRadius: 20,
+                  background: `url("${HERO_IMAGE}") center/cover`,
+                  minHeight: 440,
+                  position: "relative",
+                  color: C.white,
+                  padding: 22,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
                 }}
               >
-                From engineer to <span style={{ color: C.accent }}>AI-native practitioner.</span>
+                <span style={{ fontSize: 12, fontWeight: 600, textAlign: "center", display: "block", color: C.white }}>
+                  Start your AI journey
+                </span>
+                <div
+                  style={{
+                    background: "linear-gradient(180deg, rgba(14,34,56,0) 0%, rgba(14,34,56,0.75) 100%)",
+                    margin: "-22px",
+                    marginTop: "auto",
+                    padding: "60px 22px 22px",
+                    borderRadius: "0 0 20px 20px",
+                  }}
+                >
+                  <p style={{ fontSize: 14, lineHeight: 1.5, fontWeight: 600, color: C.white }}>
+                    &ldquo;Six months later, our team ships AI features that pass compliance review on the first pass.&rdquo;
+                  </p>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.75)", marginTop: 8 }}>
+                    Head of Engineering, {SITE.client}
+                  </p>
+                </div>
+              </div>
+
+              {/* Dark navy stat */}
+              <div
+                style={{
+                  background: C.ink,
+                  color: C.white,
+                  borderRadius: 20,
+                  padding: 24,
+                  minHeight: 212,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <p style={{ fontSize: 12.5, color: "rgba(255,255,255,0.6)", textAlign: "center" }}>
+                  Programme duration
+                </p>
+                <div style={{ textAlign: "center" }}>
+                  <b style={{ fontSize: 54, fontWeight: 800, letterSpacing: "-0.03em", color: C.white, display: "block" }}>
+                    6
+                  </b>
+                  <span style={{ fontSize: 13, color: "rgba(255,255,255,0.75)" }}>months intensive</span>
+                </div>
+                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", textAlign: "center" }}>
+                  {SITE.cadence}
+                </p>
+              </div>
+
+              {/* Lime stat */}
+              <div
+                style={{
+                  background: C.lime,
+                  color: C.ink,
+                  borderRadius: 20,
+                  padding: 24,
+                  minHeight: 212,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div>
+                  <b style={{ fontSize: 54, fontWeight: 800, letterSpacing: "-0.03em", color: C.ink, display: "block" }}>
+                    {totalSessions}
+                  </b>
+                  <span style={{ fontSize: 13, color: C.ink70, fontWeight: 600 }}>
+                    Sessions across {CURRICULUM.length} modules
+                  </span>
+                </div>
+                <span style={{ fontSize: 12, fontWeight: 600, color: C.ink70 }}>
+                  {confirmedMonths} months with syllabus confirmed →
+                </span>
+              </div>
+            </div>
+
+            {/* Right — eyebrow + headline + body */}
+            <div>
+              <p style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, color: C.ink50 }}>
+                <span style={{ width: 8, height: 8, borderRadius: 999, background: C.lime, display: "inline-block" }} />
+                Next-level engineering programme
+              </p>
+              <h2
+                style={{
+                  fontSize: "clamp(32px, 3.6vw, 48px)",
+                  fontWeight: 800,
+                  letterSpacing: "-0.03em",
+                  lineHeight: 1.08,
+                  color: C.ink,
+                  marginTop: 20,
+                  maxWidth: "16ch",
+                }}
+              >
+                Together for a brighter engineering future.
               </h2>
               <p
                 style={{
-                  fontSize: 15,
-                  lineHeight: 1.75,
-                  color: C.textSecondary,
-                  marginTop: 20,
-                  maxWidth: "54ch",
+                  fontSize: 15.5,
+                  lineHeight: 1.7,
+                  color: C.ink70,
+                  marginTop: 22,
+                  maxWidth: "48ch",
                 }}
               >
-                {SITE.programme} is a six-month intensive programme for {SITE.client} engineers.
-                You will move from understanding how large language models work to building
-                autonomous AI agents on real banking workflows — and doing it with the governance
-                guardrails the industry requires.
-              </p>
-              <p
-                style={{
-                  fontSize: 15,
-                  lineHeight: 1.75,
-                  color: C.textSecondary,
-                  marginTop: 14,
-                  maxWidth: "54ch",
-                }}
-              >
-                Every session is grounded in the bank&apos;s own document types, data and
+                Every session is grounded in {SITE.client}&apos;s own document types, data and
                 compliance context. You leave each month with something you can deploy, not just
                 something you can explain.
               </p>
-            </div>
 
-            {/* Format facts card */}
-            <div
-              style={{
-                padding: "26px 28px",
-                background: C.bg,
-                border: `1px solid ${C.border}`,
-                borderRadius: 14,
-                boxShadow: SHADOW_CARD,
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 10,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: C.textMuted,
-                  marginBottom: 18,
-                }}
-              >
-                Programme details
-              </p>
-              {FORMATS.map(({ label, value }, i) => (
-                <div
-                  key={label}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "baseline",
-                    gap: 16,
-                    padding: "12px 0",
-                    borderBottom: i < FORMATS.length - 1 ? `1px solid ${C.border}` : undefined,
-                    fontSize: 13.5,
-                  }}
-                >
-                  <span style={{ color: C.textSecondary }}>{label}</span>
-                  <span style={{ fontWeight: 500, color: C.text, textAlign: "right" }}>
-                    {value}
-                  </span>
-                </div>
-              ))}
-              <div style={{ marginTop: 24 }}>
-                <p
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 10,
-                    letterSpacing: "0.14em",
-                    textTransform: "uppercase",
-                    color: C.textMuted,
-                    marginBottom: 14,
-                  }}
-                >
-                  Trainers
-                </p>
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  {TRAINERS.map((t) => (
-                    <div key={t.code} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <span
-                        aria-hidden="true"
-                        style={{
-                          width: 26,
-                          height: 26,
-                          borderRadius: 999,
-                          background: C.accentSoft,
-                          border: `1px solid rgba(37,99,235,0.2)`,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontFamily: "var(--font-mono)",
-                          fontSize: 9,
-                          color: C.accent,
-                          flexShrink: 0,
-                        }}
-                      >
-                        {t.name
-                          .split(" ")
-                          .map((w) => w[0])
-                          .join("")
-                          .slice(0, 2)}
-                      </span>
-                      <div style={{ fontSize: 12.5, lineHeight: 1.35 }}>
-                        <span style={{ fontWeight: 500, color: C.text }}>{t.name}</span>{" "}
-                        <span style={{ color: C.textMuted }}>· {t.role}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Three pillars */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-              marginTop: 48,
-              borderTop: `1px solid ${C.border}`,
-              borderLeft: `1px solid ${C.border}`,
-            }}
-          >
-            {PILLARS.map((f) => (
               <div
-                key={f.code}
                 style={{
-                  padding: "28px 28px 32px",
-                  borderBottom: `1px solid ${C.border}`,
-                  borderRight: `1px solid ${C.border}`,
+                  marginTop: 32,
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                  gap: 24,
                 }}
               >
-                <p
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 10,
-                    letterSpacing: "0.14em",
-                    textTransform: "uppercase",
-                    color: C.accent,
-                  }}
-                >
-                  {f.code}
-                </p>
-                <h3
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 600,
-                    letterSpacing: "-0.01em",
-                    marginTop: 10,
-                    color: C.text,
-                  }}
-                >
-                  {f.title}
-                </h3>
-                <p style={{ fontSize: 13, lineHeight: 1.75, color: C.textSecondary, marginTop: 10 }}>
-                  {f.body}
-                </p>
+                {TRAINERS.slice(0, 3).map((t) => (
+                  <div key={t.code} style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        width: 42,
+                        height: 42,
+                        borderRadius: 999,
+                        background: C.ink,
+                        color: C.lime,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: 800,
+                        fontSize: 13,
+                      }}
+                    >
+                      {t.name.split(" ").map((w) => w[0]).join("").slice(0, 2)}
+                    </span>
+                    <div style={{ lineHeight: 1.3 }}>
+                      <p style={{ fontSize: 13.5, fontWeight: 700, color: C.ink }}>{t.name}</p>
+                      <p style={{ fontSize: 12, color: C.ink50 }}>{t.role}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </section>
 
-        {/* ── 02 · Course Structure ─────────────────────────────── */}
-        <section id="structure" style={{ marginTop: 96, scrollMarginTop: 24 }}>
-          <SectionHead index="02" label="Course structure" />
+        {/* ───────── 02 · Course structure ───────── */}
+        <section id="structure" style={{ padding: "96px 56px", scrollMarginTop: 24 }}>
+          <div style={{ display: "flex", alignItems: "end", justifyContent: "space-between", gap: 32, marginBottom: 48 }}>
+            <div>
+              <p style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, color: C.ink50 }}>
+                <span style={{ width: 8, height: 8, borderRadius: 999, background: C.lime, display: "inline-block" }} />
+                Six-month curriculum
+              </p>
+              <h2
+                style={{
+                  fontSize: "clamp(32px, 3.6vw, 48px)",
+                  fontWeight: 800,
+                  letterSpacing: "-0.03em",
+                  lineHeight: 1.08,
+                  color: C.ink,
+                  marginTop: 18,
+                  maxWidth: "20ch",
+                }}
+              >
+                A path from LLM fundamentals to shipping AI-native systems.
+              </h2>
+            </div>
+            <p style={{ fontSize: 13.5, color: C.ink50, maxWidth: "32ch" }}>
+              Each month builds on the last. Months 1–3 are confirmed; 4–6 ship with each cohort&apos;s
+              industry context.
+            </p>
+          </div>
 
-          <div style={{ marginTop: 32, display: "flex", flexDirection: "column", gap: 12 }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: 20,
+            }}
+          >
             {CURRICULUM.map((m) => {
               const isPending = m.status === "pending";
               const written = m.sessions.filter((s) => s.title).length;
@@ -476,612 +554,415 @@ export default function LandingPage() {
                 <div
                   key={m.id}
                   style={{
-                    display: "grid",
-                    gridTemplateColumns: "88px minmax(0, 1fr) minmax(0, 1.6fr)",
-                    gap: 0,
-                    alignItems: "stretch",
-                    background: C.bg,
-                    border: `1px solid ${C.border}`,
-                    borderRadius: 14,
-                    boxShadow: SHADOW_CARD,
-                    opacity: isPending ? 0.72 : 1,
-                    overflow: "hidden",
+                    background: C.white,
+                    border: `1px solid ${C.rule}`,
+                    borderRadius: 20,
+                    padding: "28px 28px 24px",
+                    opacity: isPending ? 0.65 : 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 18,
                   }}
                 >
-                  {/* Month col */}
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "24px 16px",
-                      borderRight: `1px solid ${C.border}`,
-                      background: isPending ? C.panel : C.accentSoft,
-                    }}
-                  >
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <span
                       style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: 9,
-                        letterSpacing: "0.14em",
-                        textTransform: "uppercase",
-                        color: isPending ? C.textMuted : C.accent,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                        padding: "6px 14px",
+                        borderRadius: 999,
+                        background: isPending ? C.wash : C.lime,
+                        fontSize: 11.5,
+                        fontWeight: 700,
+                        letterSpacing: "0.04em",
+                        color: C.ink,
                       }}
                     >
-                      {m.code}
+                      {m.code} · M{m.month}
                     </span>
-                    <b
-                      style={{
-                        display: "block",
-                        fontSize: 22,
-                        fontWeight: 600,
-                        color: isPending ? C.textMuted : C.accent,
-                        marginTop: 4,
-                        fontVariantNumeric: "tabular-nums",
-                      }}
-                    >
-                      M.0{m.month}
-                    </b>
+                    <span style={{ fontSize: 11.5, fontWeight: 600, color: C.ink50 }}>
+                      {isPending ? "Syllabus pending" : `${written}/${m.sessions.length} sessions`}
+                    </span>
                   </div>
 
-                  {/* Title + blurb col */}
-                  <div style={{ padding: "22px 26px", borderRight: `1px solid ${C.border}` }}>
-                    <p
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: 10,
-                        letterSpacing: "0.14em",
-                        textTransform: "uppercase",
-                        color: C.textMuted,
-                        marginBottom: 8,
-                      }}
-                    >
-                      Month {m.month}
-                    </p>
-                    <h3
-                      style={{
-                        fontSize: 15,
-                        fontWeight: 600,
-                        letterSpacing: "-0.01em",
-                        lineHeight: 1.35,
-                        color: C.text,
-                      }}
-                    >
-                      {m.title}
-                    </h3>
-                    <p
-                      style={{
-                        fontSize: 12.5,
-                        lineHeight: 1.7,
-                        color: C.textSecondary,
-                        marginTop: 8,
-                      }}
-                    >
-                      {m.blurb}
-                    </p>
-                    {m.lead ? (
-                      <p style={{ fontSize: 11.5, color: C.textMuted, marginTop: 10 }}>
-                        {m.lead} <span>· {m.leadRole}</span>
-                      </p>
-                    ) : null}
-                  </div>
+                  <h3
+                    style={{
+                      fontSize: 20,
+                      fontWeight: 800,
+                      letterSpacing: "-0.02em",
+                      lineHeight: 1.22,
+                      color: C.ink,
+                    }}
+                  >
+                    {m.title}
+                  </h3>
 
-                  {/* Sessions col */}
-                  <div style={{ padding: "22px 26px" }}>
-                    {isPending ? (
-                      <p
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: 10,
-                          letterSpacing: "0.14em",
-                          textTransform: "uppercase",
-                          color: C.textMuted,
-                        }}
-                      >
-                        [{m.sessions.length} sessions — syllabus pending]
-                      </p>
-                    ) : (
-                      <>
-                        <p
+                  <p style={{ fontSize: 13.5, lineHeight: 1.65, color: C.ink70 }}>
+                    {m.blurb}
+                  </p>
+
+                  {!isPending && (
+                    <ul style={{ display: "flex", flexDirection: "column", gap: 6, borderTop: `1px solid ${C.rule}`, paddingTop: 14 }}>
+                      {m.sessions.map((s) => (
+                        <li
+                          key={s.code}
                           style={{
-                            fontFamily: "var(--font-mono)",
-                            fontSize: 10,
-                            letterSpacing: "0.14em",
-                            textTransform: "uppercase",
-                            color: C.textMuted,
-                            marginBottom: 10,
+                            display: "flex",
+                            gap: 10,
+                            fontSize: 12.5,
+                            lineHeight: 1.5,
+                            color: s.title ? C.ink70 : C.ink30,
                           }}
                         >
-                          {written} / {m.sessions.length} sessions written
-                        </p>
-                        <ol style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                          {m.sessions.map((s) => (
-                            <li
-                              key={s.code}
-                              style={{
-                                display: "flex",
-                                gap: 10,
-                                fontSize: 12.5,
-                                lineHeight: 1.55,
-                                color: s.title ? C.text : C.textMuted,
-                              }}
-                            >
-                              <span
-                                style={{
-                                  fontFamily: "var(--font-mono)",
-                                  fontSize: 9,
-                                  flexShrink: 0,
-                                  paddingTop: 3,
-                                  color: s.title ? C.accent : C.textMuted,
-                                }}
-                              >
-                                {s.index}
-                              </span>
-                              <span>{s.title ?? "TBD"}</span>
-                            </li>
-                          ))}
-                        </ol>
-                      </>
-                    )}
-                  </div>
+                          <span style={{ fontWeight: 700, color: C.ink50, flexShrink: 0, width: 24 }}>
+                            {s.index}
+                          </span>
+                          <span>{s.title ?? "TBD"}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {m.lead && (
+                    <p style={{ fontSize: 11.5, color: C.ink50, marginTop: "auto", paddingTop: 10 }}>
+                      Led by <b style={{ color: C.ink }}>{m.lead}</b> · {m.leadRole}
+                    </p>
+                  )}
                 </div>
               );
             })}
           </div>
         </section>
 
-        {/* ── 03 · Course Highlights ────────────────────────────── */}
-        <section style={{ marginTop: 96 }}>
-          <SectionHead index="03" label="Course highlights" />
-
+        {/* ───────── 03 · Highlights (outcomes) ───────── */}
+        <section
+          id="highlights"
+          style={{ background: C.wash, padding: "96px 56px" }}
+        >
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
-              gap: 56,
+              gap: 72,
               alignItems: "start",
-              marginTop: 32,
             }}
           >
             <div>
+              <p style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, color: C.ink50 }}>
+                <span style={{ width: 8, height: 8, borderRadius: 999, background: C.lime, display: "inline-block" }} />
+                Programme outcomes
+              </p>
               <h2
                 style={{
-                  fontSize: "clamp(22px, 2.4vw, 30px)",
-                  fontWeight: 600,
-                  letterSpacing: "-0.02em",
-                  lineHeight: 1.2,
-                  color: C.text,
+                  fontSize: "clamp(32px, 3.6vw, 48px)",
+                  fontWeight: 800,
+                  letterSpacing: "-0.03em",
+                  lineHeight: 1.08,
+                  color: C.ink,
+                  marginTop: 20,
+                  maxWidth: "16ch",
                 }}
               >
-                What you will be able to do
+                What you will be able to do.
               </h2>
               <p
                 style={{
-                  fontSize: 14,
-                  lineHeight: 1.75,
-                  color: C.textSecondary,
-                  marginTop: 14,
-                  maxWidth: "48ch",
+                  fontSize: 15,
+                  lineHeight: 1.7,
+                  color: C.ink70,
+                  marginTop: 22,
+                  maxWidth: "42ch",
                 }}
               >
-                By the end of the programme, participants can build, evaluate and govern AI
-                systems in a regulated banking context — not just describe how they work.
+                By the end of the programme, participants build, evaluate and govern AI systems in a
+                regulated banking context — not just describe how they work.
               </p>
 
-              <ul style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 0 }}>
-                {OUTCOMES.map((outcome, i) => (
-                  <li
-                    key={i}
-                    style={{
-                      display: "flex",
-                      gap: 16,
-                      padding: "14px 0",
-                      borderBottom: `1px solid ${C.border}`,
-                      fontSize: 13.5,
-                      lineHeight: 1.65,
-                      color: C.text,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: 9,
-                        color: C.accent,
-                        flexShrink: 0,
-                        paddingTop: 4,
-                        letterSpacing: "0.1em",
-                      }}
-                    >
-                      0{i + 1}
-                    </span>
-                    {outcome}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Right column — module topics */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <h3
+              <div
                 style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  letterSpacing: "-0.01em",
-                  color: C.textSecondary,
-                  marginBottom: 4,
+                  marginTop: 36,
+                  background: C.ink,
+                  color: C.white,
+                  padding: 28,
+                  borderRadius: 20,
+                  maxWidth: 420,
                 }}
               >
-                Topics across six months
-              </h3>
-              {CURRICULUM.filter((m) => m.status !== "pending").map((m) => (
-                <div
-                  key={m.id}
+                <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>Delivery format</p>
+                <p style={{ fontSize: 20, fontWeight: 800, marginTop: 8, letterSpacing: "-0.01em" }}>
+                  {SITE.mode}
+                </p>
+                <p style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", marginTop: 6 }}>
+                  {SITE.cadence} · {SITE.cohort}
+                </p>
+              </div>
+            </div>
+
+            <ol style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              {OUTCOMES.map((outcome, i) => (
+                <li
+                  key={i}
                   style={{
-                    padding: "18px 20px",
-                    background: C.bg,
-                    border: `1px solid ${C.border}`,
-                    borderRadius: 14,
-                    boxShadow: SHADOW_CARD,
+                    display: "flex",
+                    gap: 20,
+                    padding: "22px 0",
+                    borderBottom: i < OUTCOMES.length - 1 ? `1px solid ${C.rule}` : "none",
+                    fontSize: 15.5,
+                    lineHeight: 1.55,
+                    color: C.ink,
                   }}
                 >
-                  <div
-                    style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}
+                  <span
+                    style={{
+                      flexShrink: 0,
+                      width: 42,
+                      height: 42,
+                      borderRadius: 999,
+                      background: i % 2 === 0 ? C.lime : C.white,
+                      border: i % 2 === 0 ? "none" : `1.5px solid ${C.ink}`,
+                      color: C.ink,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: 800,
+                      fontSize: 14,
+                    }}
                   >
-                    <span
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: 9,
-                        letterSpacing: "0.14em",
-                        color: C.accent,
-                        background: C.accentSoft,
-                        padding: "3px 8px",
-                        borderRadius: 999,
-                        border: `1px solid rgba(37,99,235,0.2)`,
-                      }}
-                    >
-                      {m.code}
-                    </span>
-                    <span style={{ fontSize: 13, fontWeight: 500, color: C.text }}>{m.short}</span>
-                  </div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                    {m.sessions
-                      .filter((s) => s.title)
-                      .map((s) => (
-                        <span
-                          key={s.code}
-                          style={{
-                            fontSize: 11,
-                            padding: "4px 10px",
-                            borderRadius: 999,
-                            background: C.panel,
-                            border: `1px solid ${C.border}`,
-                            color: C.textSecondary,
-                          }}
-                        >
-                          {s.title}
-                        </span>
-                      ))}
-                  </div>
-                </div>
+                    0{i + 1}
+                  </span>
+                  <span style={{ paddingTop: 10, fontWeight: 500 }}>{outcome}</span>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
 
-        {/* ── 04 · Fee & Payment ────────────────────────────────── */}
-        <section style={{ marginTop: 96 }}>
-          <SectionHead index="04" label="Fee & payment" />
+        {/* ───────── 04 · Fees ───────── */}
+        <section id="fees" style={{ padding: "96px 56px" }}>
+          <div style={{ textAlign: "center", maxWidth: 640, margin: "0 auto 56px" }}>
+            <p style={{ display: "inline-flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, color: C.ink50 }}>
+              <span style={{ width: 8, height: 8, borderRadius: 999, background: C.lime, display: "inline-block" }} />
+              Fees &amp; payment
+            </p>
+            <h2
+              style={{
+                fontSize: "clamp(32px, 3.6vw, 48px)",
+                fontWeight: 800,
+                letterSpacing: "-0.03em",
+                lineHeight: 1.08,
+                color: C.ink,
+                marginTop: 18,
+              }}
+            >
+              Transparent pricing. Two ways in.
+            </h2>
+            <p style={{ fontSize: 15, color: C.ink70, marginTop: 16 }}>
+              All fees in Indonesian Rupiah, exclude VAT. Reach out to HR or the programme team to
+              enrol — invitation-only, max 24 participants per cohort.
+            </p>
+          </div>
 
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)",
-              gap: 16,
-              marginTop: 32,
+              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+              gap: 20,
+              maxWidth: 920,
+              margin: "0 auto 40px",
             }}
           >
-            {/* Tier 1 */}
-            <div
-              style={{
-                padding: "28px 30px",
-                background: C.bg,
-                border: `1px solid ${C.border}`,
-                borderRadius: 14,
-                boxShadow: SHADOW_CARD,
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 10,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: C.textMuted,
-                }}
-              >
-                Early enrolment
-              </p>
-              <b
-                style={{
-                  display: "block",
-                  fontSize: 32,
-                  fontWeight: 600,
-                  letterSpacing: "-0.03em",
-                  color: C.accent,
-                  marginTop: 14,
-                  fontVariantNumeric: "tabular-nums",
-                }}
-              >
-                Rp 18.500.000
-              </b>
-              <p style={{ fontSize: 12, color: C.textMuted, marginTop: 6 }}>
-                Per participant · before cohort start
-              </p>
-              <div
-                style={{
-                  marginTop: 22,
-                  paddingTop: 18,
-                  borderTop: `1px solid ${C.border}`,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 9,
-                }}
-              >
-                {[
-                  "6-month full access",
-                  "All decks and prompt sets",
-                  "AI mentor access",
-                  "Certificate of completion",
-                ].map((f) => (
-                  <p
-                    key={f}
+            {FEES.map((f) => {
+              const isLime = f.tone === "lime";
+              return (
+                <div
+                  key={f.tag}
+                  style={{
+                    padding: 36,
+                    borderRadius: 24,
+                    background: isLime ? C.ink : C.white,
+                    color: isLime ? C.white : C.ink,
+                    border: isLime ? "none" : `1px solid ${C.rule}`,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 20,
+                  }}
+                >
+                  <span
                     style={{
-                      fontSize: 12.5,
-                      color: C.textSecondary,
-                      display: "flex",
-                      gap: 8,
+                      alignSelf: "flex-start",
+                      padding: "6px 14px",
+                      borderRadius: 999,
+                      fontSize: 11.5,
+                      fontWeight: 700,
+                      letterSpacing: "0.04em",
+                      textTransform: "uppercase",
+                      background: isLime ? C.lime : C.wash,
+                      color: C.ink,
                     }}
                   >
-                    <span style={{ color: C.success, fontWeight: 600 }}>✓</span> {f}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            {/* Tier 2 — recommended */}
-            <div
-              style={{
-                padding: "28px 30px",
-                background: C.accentSoft,
-                border: `1px solid rgba(37,99,235,0.3)`,
-                borderRadius: 14,
-                boxShadow: SHADOW_LIFT,
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 10,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: C.accent,
-                }}
-              >
-                Standard · recommended
-              </p>
-              <b
-                style={{
-                  display: "block",
-                  fontSize: 32,
-                  fontWeight: 600,
-                  letterSpacing: "-0.03em",
-                  color: C.text,
-                  marginTop: 14,
-                  fontVariantNumeric: "tabular-nums",
-                }}
-              >
-                Rp 22.000.000
-              </b>
-              <p style={{ fontSize: 12, color: C.textSecondary, marginTop: 6 }}>
-                Per participant · standard rate
-              </p>
-              <div
-                style={{
-                  marginTop: 22,
-                  paddingTop: 18,
-                  borderTop: `1px solid rgba(37,99,235,0.15)`,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 9,
-                }}
-              >
-                {[
-                  "6-month full access",
-                  "All decks and prompt sets",
-                  "AI mentor access",
-                  "Certificate of completion",
-                  "Group coaching sessions",
-                ].map((f) => (
-                  <p
-                    key={f}
-                    style={{
-                      fontSize: 12.5,
-                      color: C.textSecondary,
-                      display: "flex",
-                      gap: 8,
-                    }}
-                  >
-                    <span style={{ color: C.accent, fontWeight: 600 }}>✓</span> {f}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            {/* Payment options */}
-            <div
-              style={{
-                padding: "28px 30px",
-                background: C.bg,
-                border: `1px solid ${C.border}`,
-                borderRadius: 14,
-                boxShadow: SHADOW_CARD,
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 10,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: C.textMuted,
-                }}
-              >
-                Payment options
-              </p>
-              <div
-                style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 16 }}
-              >
-                {[
-                  {
-                    label: "Option A — Full payment",
-                    desc:
-                      "Single invoice before the cohort start date. Eligible for early-enrolment rate.",
-                  },
-                  {
-                    label: "Option B — Monthly installment",
-                    desc:
-                      "Six equal monthly payments, billed on the first of each programme month.",
-                  },
-                  {
-                    label: "Option C — Corporate billing",
-                    desc:
-                      "Direct invoice to HR or Finance. Contact the programme team for a PO template.",
-                  },
-                ].map((opt, i, arr) => (
-                  <div
-                    key={opt.label}
-                    style={{
-                      paddingBottom: i < arr.length - 1 ? 16 : 0,
-                      borderBottom:
-                        i < arr.length - 1 ? `1px solid ${C.border}` : undefined,
-                    }}
-                  >
-                    <p style={{ fontSize: 13, fontWeight: 500, color: C.text }}>{opt.label}</p>
-                    <p
+                    {f.tag}
+                  </span>
+                  <div>
+                    <b
                       style={{
-                        fontSize: 12,
-                        lineHeight: 1.7,
-                        color: C.textSecondary,
-                        marginTop: 5,
+                        display: "block",
+                        fontSize: 40,
+                        fontWeight: 800,
+                        letterSpacing: "-0.03em",
+                        color: isLime ? C.lime : C.ink,
                       }}
                     >
-                      {opt.desc}
+                      {f.price}
+                    </b>
+                    <p style={{ fontSize: 13, color: isLime ? "rgba(255,255,255,0.7)" : C.ink50, marginTop: 6 }}>
+                      {f.note}
                     </p>
                   </div>
-                ))}
-              </div>
-              <p
-                style={{
-                  fontSize: 11.5,
-                  color: C.textMuted,
-                  marginTop: 16,
-                  lineHeight: 1.6,
-                }}
-              >
-                All fees are in Indonesian Rupiah and exclude VAT. Contact your HR Business
-                Partner or reach out to the programme team to enrol.
-              </p>
-            </div>
+                  <ul
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 10,
+                      borderTop: isLime ? "1px solid rgba(255,255,255,0.12)" : `1px solid ${C.rule}`,
+                      paddingTop: 20,
+                    }}
+                  >
+                    {f.perks.map((p) => (
+                      <li
+                        key={p}
+                        style={{
+                          display: "flex",
+                          gap: 10,
+                          fontSize: 14,
+                          color: isLime ? "rgba(255,255,255,0.85)" : C.ink70,
+                        }}
+                      >
+                        <span style={{ color: C.lime, fontWeight: 800 }}>✓</span> {p}
+                      </li>
+                    ))}
+                  </ul>
+                  <a
+                    href={SIGN_IN_HREF}
+                    style={{
+                      display: "inline-flex",
+                      alignSelf: "flex-start",
+                      padding: "13px 24px",
+                      borderRadius: 999,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      marginTop: 6,
+                      background: isLime ? C.lime : C.ink,
+                      color: C.ink,
+                      border: "none",
+                    }}
+                  >
+                    {isLime ? "Choose Standard" : "Choose Early"} →
+                  </a>
+                </div>
+              );
+            })}
           </div>
 
-          {/* Refund note */}
+          {/* Payment options row */}
           <div
             style={{
-              marginTop: 32,
-              padding: "22px 24px",
-              background: C.panel,
-              borderRadius: 10,
-              border: `1px solid ${C.border}`,
+              maxWidth: 920,
+              margin: "0 auto",
+              background: C.wash,
+              borderRadius: 20,
+              padding: 32,
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: 24,
             }}
           >
-            <Eyebrow>Refund policy</Eyebrow>
-            <p
-              style={{
-                fontSize: 13,
-                lineHeight: 1.75,
-                color: C.textSecondary,
-                marginTop: 10,
-                maxWidth: "72ch",
-              }}
-            >
-              Full refund available up to 14 days before the cohort start date. After that, a
-              credit note valid for the next cohort is issued. No refund once Month 2 begins.
-            </p>
+            {PAYMENT_OPTS.map((opt) => (
+              <div key={opt.label}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: C.ink }}>{opt.label}</p>
+                <p style={{ fontSize: 13, lineHeight: 1.6, color: C.ink70, marginTop: 6 }}>{opt.desc}</p>
+              </div>
+            ))}
           </div>
         </section>
 
-        {/* ── Bottom CTA ────────────────────────────────────────── */}
+        {/* ───────── Bottom CTA ───────── */}
         <section
           style={{
-            marginTop: 72,
-            padding: "40px 36px",
-            background: C.bg,
-            border: `1px solid ${C.border}`,
-            borderRadius: 14,
-            boxShadow: SHADOW_CARD,
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 24,
+            padding: "72px 56px 96px",
+            background: C.ink,
+            color: C.white,
           }}
         >
-          <div>
-            <h2
-              style={{
-                fontSize: "clamp(20px, 2vw, 26px)",
-                fontWeight: 600,
-                letterSpacing: "-0.01em",
-                color: C.text,
-                maxWidth: "32ch",
-              }}
-            >
-              Ready to join {SITE.cohort}?
-            </h2>
-            <p
-              style={{
-                fontSize: 13.5,
-                lineHeight: 1.7,
-                color: C.textSecondary,
-                marginTop: 8,
-                maxWidth: "52ch",
-              }}
-            >
-              Sign in with your {SITE.client} account to resume the programme, or reach out to the
-              programme team if you have not been invited yet.
-            </p>
-          </div>
-          <a
-            href={SIGN_IN_HREF}
+          <div
             style={{
-              display: "inline-flex",
+              maxWidth: 920,
+              margin: "0 auto",
+              display: "flex",
+              flexWrap: "wrap",
               alignItems: "center",
-              gap: 8,
-              padding: "12px 22px",
-              fontSize: 13.5,
-              fontWeight: 500,
-              color: "#fff",
-              background: C.accent,
-              border: `1px solid ${C.accent}`,
-              borderRadius: 10,
-              boxShadow: SHADOW_LIFT,
+              justifyContent: "space-between",
+              gap: 32,
             }}
           >
-            Sign in to the academy <span aria-hidden="true">→</span>
-          </a>
+            <div>
+              <p style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.5)" }}>
+                <span style={{ width: 8, height: 8, borderRadius: 999, background: C.lime, display: "inline-block" }} />
+                Ready when you are
+              </p>
+              <h2
+                style={{
+                  fontSize: "clamp(28px, 2.8vw, 40px)",
+                  fontWeight: 800,
+                  letterSpacing: "-0.025em",
+                  lineHeight: 1.1,
+                  marginTop: 16,
+                  color: C.white,
+                  maxWidth: "20ch",
+                }}
+              >
+                Join {SITE.cohort} — invitation open to {SITE.client} engineers.
+              </h2>
+            </div>
+            <a
+              href={SIGN_IN_HREF}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                padding: "18px 32px",
+                background: C.lime,
+                color: C.ink,
+                borderRadius: 999,
+                fontSize: 15,
+                fontWeight: 700,
+              }}
+            >
+              Request access →
+            </a>
+          </div>
         </section>
+
+        {/* ───────── Footer ───────── */}
+        <footer
+          style={{
+            padding: "32px 56px",
+            background: C.white,
+            borderTop: `1px solid ${C.rule}`,
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            gap: 16,
+            fontSize: 12.5,
+            color: C.ink50,
+          }}
+        >
+          <p>
+            © {SITE.short} · {SITE.client}
+          </p>
+          <p>Shannon Dynamics · Mockup landing — artpinkkan.github.io/microsite</p>
+        </footer>
       </div>
-    </main>
+    </div>
   );
 }
