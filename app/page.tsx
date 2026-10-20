@@ -1,17 +1,21 @@
 import { CURRICULUM } from "@/content/curriculum";
 import { SITE, TRAINERS } from "@/content/site";
 
-/* ── Palette (mirrors globals.css custom props for inline-style use) ───── */
+/* ── Shannon LMS §8 light tokens (mirrors globals.css for inline use) ──── */
 const C = {
-  ink: "#0E2238",
-  ink70: "#3C4F66",
-  ink50: "#6B788A",
-  ink30: "#A7B0BE",
-  lime: "#C4E538",
-  limeDark: "#A3C321",
+  // text
+  ink:    "#111827",   // text-primary (headings, dark surfaces)
+  ink70:  "#374151",   // slightly muted body
+  ink50:  "#5B6470",   // text-secondary
+  ink30:  "#9AA1AC",   // text-muted
+  // accent — royal blue replaces the lime from the reference
+  accent:     "#2563EB",
+  accentHov:  "#1D4ED8",
+  accentSoft: "rgba(37, 99, 235, 0.08)",
+  // surfaces
   white: "#FFFFFF",
-  wash: "#F5F6F8",
-  rule: "#E6E8EC",
+  wash:  "#F5F6F8",    // panel — section bg
+  rule:  "#E8EAEE",    // border — hairline
 };
 
 const SIGN_IN_HREF = "#"; // static mockup — no auth endpoint
@@ -99,11 +103,11 @@ export default function LandingPage() {
                 width: 32,
                 height: 32,
                 borderRadius: 8,
-                background: C.ink,
+                background: C.accent,
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: C.lime,
+                color: C.white,
                 fontWeight: 800,
                 fontSize: 13,
                 letterSpacing: "0.02em",
@@ -302,10 +306,10 @@ export default function LandingPage() {
                       borderRadius: 999,
                       fontSize: 13,
                       fontWeight: 600,
-                      color: highlighted ? C.ink : C.ink,
-                      background: highlighted ? C.lime : C.white,
-                      boxShadow: "0 6px 20px rgba(14, 34, 56, 0.08)",
-                      border: highlighted ? `1px solid ${C.limeDark}` : `1px solid ${C.rule}`,
+                      color: highlighted ? C.white : C.ink,
+                      background: highlighted ? C.accent : C.white,
+                      boxShadow: "0 6px 20px rgba(17, 24, 39, 0.08)",
+                      border: highlighted ? `1px solid ${C.accentHov}` : `1px solid ${C.rule}`,
                     }}
                   >
                     <span
@@ -314,7 +318,7 @@ export default function LandingPage() {
                         width: 6,
                         height: 6,
                         borderRadius: 999,
-                        background: highlighted ? C.ink : C.ink50,
+                        background: highlighted ? C.white : C.ink50,
                       }}
                     />
                     {m.short}
@@ -413,28 +417,29 @@ export default function LandingPage() {
                 </p>
               </div>
 
-              {/* Lime stat */}
+              {/* Accent stat — soft blue tint, royal-blue numerals */}
               <div
                 style={{
-                  background: C.lime,
+                  background: C.accentSoft,
                   color: C.ink,
                   borderRadius: 20,
                   padding: 24,
                   minHeight: 212,
+                  border: `1px solid rgba(37, 99, 235, 0.18)`,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
                 }}
               >
                 <div>
-                  <b style={{ fontSize: 54, fontWeight: 800, letterSpacing: "-0.03em", color: C.ink, display: "block" }}>
+                  <b style={{ fontSize: 54, fontWeight: 800, letterSpacing: "-0.03em", color: C.accent, display: "block" }}>
                     {totalSessions}
                   </b>
                   <span style={{ fontSize: 13, color: C.ink70, fontWeight: 600 }}>
                     Sessions across {CURRICULUM.length} modules
                   </span>
                 </div>
-                <span style={{ fontSize: 12, fontWeight: 600, color: C.ink70 }}>
+                <span style={{ fontSize: 12, fontWeight: 600, color: C.accent }}>
                   {confirmedMonths} months with syllabus confirmed →
                 </span>
               </div>
@@ -443,7 +448,7 @@ export default function LandingPage() {
             {/* Right — eyebrow + headline + body */}
             <div>
               <p style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, color: C.ink50 }}>
-                <span style={{ width: 8, height: 8, borderRadius: 999, background: C.lime, display: "inline-block" }} />
+                <span style={{ width: 8, height: 8, borderRadius: 999, background: C.accent, display: "inline-block" }} />
                 Next-level engineering programme
               </p>
               <h2
@@ -489,8 +494,8 @@ export default function LandingPage() {
                         width: 42,
                         height: 42,
                         borderRadius: 999,
-                        background: C.ink,
-                        color: C.lime,
+                        background: C.accent,
+                        color: C.white,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -516,7 +521,7 @@ export default function LandingPage() {
           <div style={{ display: "flex", alignItems: "end", justifyContent: "space-between", gap: 32, marginBottom: 48 }}>
             <div>
               <p style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, color: C.ink50 }}>
-                <span style={{ width: 8, height: 8, borderRadius: 999, background: C.lime, display: "inline-block" }} />
+                <span style={{ width: 8, height: 8, borderRadius: 999, background: C.accent, display: "inline-block" }} />
                 Six-month curriculum
               </p>
               <h2
@@ -572,11 +577,12 @@ export default function LandingPage() {
                         gap: 6,
                         padding: "6px 14px",
                         borderRadius: 999,
-                        background: isPending ? C.wash : C.lime,
+                        background: isPending ? C.wash : C.accentSoft,
+                        border: isPending ? `1px solid ${C.rule}` : `1px solid rgba(37, 99, 235, 0.18)`,
                         fontSize: 11.5,
                         fontWeight: 700,
                         letterSpacing: "0.04em",
-                        color: C.ink,
+                        color: isPending ? C.ink50 : C.accent,
                       }}
                     >
                       {m.code} · M{m.month}
@@ -650,7 +656,7 @@ export default function LandingPage() {
           >
             <div>
               <p style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, color: C.ink50 }}>
-                <span style={{ width: 8, height: 8, borderRadius: 999, background: C.lime, display: "inline-block" }} />
+                <span style={{ width: 8, height: 8, borderRadius: 999, background: C.accent, display: "inline-block" }} />
                 Programme outcomes
               </p>
               <h2
@@ -719,9 +725,9 @@ export default function LandingPage() {
                       width: 42,
                       height: 42,
                       borderRadius: 999,
-                      background: i % 2 === 0 ? C.lime : C.white,
+                      background: i % 2 === 0 ? C.accent : C.white,
                       border: i % 2 === 0 ? "none" : `1.5px solid ${C.ink}`,
-                      color: C.ink,
+                      color: i % 2 === 0 ? C.white : C.ink,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -742,7 +748,7 @@ export default function LandingPage() {
         <section id="fees" style={{ padding: "96px 56px" }}>
           <div style={{ textAlign: "center", maxWidth: 640, margin: "0 auto 56px" }}>
             <p style={{ display: "inline-flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, color: C.ink50 }}>
-              <span style={{ width: 8, height: 8, borderRadius: 999, background: C.lime, display: "inline-block" }} />
+              <span style={{ width: 8, height: 8, borderRadius: 999, background: C.accent, display: "inline-block" }} />
               Fees &amp; payment
             </p>
             <h2
@@ -797,8 +803,8 @@ export default function LandingPage() {
                       fontWeight: 700,
                       letterSpacing: "0.04em",
                       textTransform: "uppercase",
-                      background: isLime ? C.lime : C.wash,
-                      color: C.ink,
+                      background: isLime ? C.accent : C.wash,
+                      color: isLime ? C.white : C.ink,
                     }}
                   >
                     {f.tag}
@@ -810,7 +816,7 @@ export default function LandingPage() {
                         fontSize: 40,
                         fontWeight: 800,
                         letterSpacing: "-0.03em",
-                        color: isLime ? C.lime : C.ink,
+                        color: isLime ? C.accent : C.ink,
                       }}
                     >
                       {f.price}
@@ -838,7 +844,7 @@ export default function LandingPage() {
                           color: isLime ? "rgba(255,255,255,0.85)" : C.ink70,
                         }}
                       >
-                        <span style={{ color: C.lime, fontWeight: 800 }}>✓</span> {p}
+                        <span style={{ color: C.accent, fontWeight: 800 }}>✓</span> {p}
                       </li>
                     ))}
                   </ul>
@@ -852,8 +858,8 @@ export default function LandingPage() {
                       fontSize: 14,
                       fontWeight: 600,
                       marginTop: 6,
-                      background: isLime ? C.lime : C.ink,
-                      color: C.ink,
+                      background: isLime ? C.accent : C.ink,
+                      color: C.white,
                       border: "none",
                     }}
                   >
@@ -907,7 +913,7 @@ export default function LandingPage() {
           >
             <div>
               <p style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.5)" }}>
-                <span style={{ width: 8, height: 8, borderRadius: 999, background: C.lime, display: "inline-block" }} />
+                <span style={{ width: 8, height: 8, borderRadius: 999, background: C.accent, display: "inline-block" }} />
                 Ready when you are
               </p>
               <h2
@@ -931,8 +937,8 @@ export default function LandingPage() {
                 alignItems: "center",
                 gap: 10,
                 padding: "18px 32px",
-                background: C.lime,
-                color: C.ink,
+                background: C.accent,
+                color: C.white,
                 borderRadius: 999,
                 fontSize: 15,
                 fontWeight: 700,
