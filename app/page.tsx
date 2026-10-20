@@ -70,22 +70,9 @@ export default function LandingPage() {
   const confirmedMonths = CURRICULUM.filter((m) => m.status !== "pending").length;
 
   return (
-    <div
-      id="top"
-      style={{
-        maxWidth: 1360,
-        margin: "0 auto",
-        padding: 32,
-      }}
-    >
-      {/* ─────── Framed white card that holds the whole landing ─────── */}
-      <div
-        style={{
-          background: C.white,
-          borderRadius: 28,
-          overflow: "hidden",
-        }}
-      >
+    <div id="top">
+      {/* Full-width — sections span the viewport; content gutters live on each section. */}
+      <div style={{ background: C.white }}>
         {/* ───────── Top nav ───────── */}
         <nav
           style={{

@@ -26,14 +26,14 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  background: var(--panel);
+  background: var(--bg);
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  background: var(--panel);
+  background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-feature-settings: 'cv11', 'ss01';
